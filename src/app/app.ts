@@ -1,4 +1,6 @@
 import { Component, HostListener, computed, signal } from '@angular/core';
+import { Member, MemberData } from './services/member';
+import { AnonymousSubject } from 'rxjs/internal/Subject';
 
 @Component({
   selector: 'app-root',
@@ -6,7 +8,17 @@ import { Component, HostListener, computed, signal } from '@angular/core';
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
+
 export class App {
+  data: MemberData[] = [];
+  constructor(private getMember: Member) {
+    console.log('constructor called');
+  getMember.getMembers().subscribe((members) => {
+    this.data = members;
+      console.log('Members fetched:', this.data);
+    });
+  }
+
   protected readonly themes = ['Light', 'Tropical', 'Midnight', 'Corporate', 'Glossy'] as const;
   protected readonly activeTheme = signal<(typeof this.themes)[number]>('Tropical');
   protected readonly cartCount = signal(2);
@@ -81,14 +93,14 @@ export class App {
     { name: 'Sunrise Squeeze', detail: '250ml · 6 pack', price: 179, oldPrice: 210, rating: '4.8', tag: 'Fresh pick', image: 'https://images.unsplash.com/photo-1487215078519-e21cc028cb29?auto=format&fit=crop&w=720&q=85', tone: 'sun' },
     { name: 'Coco Calm', detail: '400ml · 12 pack', price: 429, oldPrice: 480, rating: '4.9', tag: 'Best value', image: 'https://images.unsplash.com/photo-1580984969071-a8da5656c2fb?auto=format&fit=crop&w=720&q=85', tone: 'coral' },
     { name: 'Green Island', detail: '1 Liter · Single bottle', price: 149, oldPrice: 179, rating: '4.7', tag: 'New', image: 'https://images.unsplash.com/photo-1543362906-acfc16c67564?auto=format&fit=crop&w=720&q=85', tone: 'lavender' }
-    ,{ name: 'Palm Morning', detail: '200ml · 6 pack', price: 139, oldPrice: 169, rating: '4.8', tag: 'Fresh pick', image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=720&q=85', tone: 'mint' }
-    ,{ name: 'Coco Balance', detail: '250ml · Single bottle', price: 49, oldPrice: 59, rating: '4.7', tag: 'Everyday', image: 'https://images.unsplash.com/photo-1505253716362-afaea1d3d1af?auto=format&fit=crop&w=720&q=85', tone: 'sun' }
-    ,{ name: 'Island Reserve', detail: '400ml · 6 pack', price: 269, oldPrice: 310, rating: '4.9', tag: 'Limited', image: 'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=720&q=85', tone: 'coral' }
-    ,{ name: 'Coconut Club', detail: '1 Liter · 3 pack', price: 399, oldPrice: 450, rating: '4.8', tag: 'Save 12%', image: 'https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=720&q=85', tone: 'lavender' }
-    ,{ name: 'Morning Dew', detail: '200ml · 12 pack', price: 259, oldPrice: 300, rating: '4.9', tag: 'Bestseller', image: 'https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?auto=format&fit=crop&w=720&q=85', tone: 'mint' }
-    ,{ name: 'Coco Breeze', detail: '250ml · 6 pack', price: 189, oldPrice: 220, rating: '4.8', tag: 'New', image: 'https://images.unsplash.com/photo-1534353473418-4cfa6c56fd38?auto=format&fit=crop&w=720&q=85', tone: 'sun' }
-    ,{ name: 'Pure Tropic', detail: '400ml · Single bottle', price: 99, oldPrice: 119, rating: '4.7', tag: 'Hydration', image: 'https://images.unsplash.com/photo-1502741338009-cac2772e18bc?auto=format&fit=crop&w=720&q=85', tone: 'coral' }
-    ,{ name: 'Harvest Case', detail: '1 Liter · 6 pack', price: 729, oldPrice: 820, rating: '4.9', tag: 'Best value', image: 'https://images.unsplash.com/photo-1528825871115-3581a5387919?auto=format&fit=crop&w=720&q=85', tone: 'lavender' }
+    , { name: 'Palm Morning', detail: '200ml · 6 pack', price: 139, oldPrice: 169, rating: '4.8', tag: 'Fresh pick', image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=720&q=85', tone: 'mint' }
+    , { name: 'Coco Balance', detail: '250ml · Single bottle', price: 49, oldPrice: 59, rating: '4.7', tag: 'Everyday', image: 'https://images.unsplash.com/photo-1505253716362-afaea1d3d1af?auto=format&fit=crop&w=720&q=85', tone: 'sun' }
+    , { name: 'Island Reserve', detail: '400ml · 6 pack', price: 269, oldPrice: 310, rating: '4.9', tag: 'Limited', image: 'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=720&q=85', tone: 'coral' }
+    , { name: 'Coconut Club', detail: '1 Liter · 3 pack', price: 399, oldPrice: 450, rating: '4.8', tag: 'Save 12%', image: 'https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=720&q=85', tone: 'lavender' }
+    , { name: 'Morning Dew', detail: '200ml · 12 pack', price: 259, oldPrice: 300, rating: '4.9', tag: 'Bestseller', image: 'https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?auto=format&fit=crop&w=720&q=85', tone: 'mint' }
+    , { name: 'Coco Breeze', detail: '250ml · 6 pack', price: 189, oldPrice: 220, rating: '4.8', tag: 'New', image: 'https://images.unsplash.com/photo-1534353473418-4cfa6c56fd38?auto=format&fit=crop&w=720&q=85', tone: 'sun' }
+    , { name: 'Pure Tropic', detail: '400ml · Single bottle', price: 99, oldPrice: 119, rating: '4.7', tag: 'Hydration', image: 'https://images.unsplash.com/photo-1502741338009-cac2772e18bc?auto=format&fit=crop&w=720&q=85', tone: 'coral' }
+    , { name: 'Harvest Case', detail: '1 Liter · 6 pack', price: 729, oldPrice: 820, rating: '4.9', tag: 'Best value', image: 'https://images.unsplash.com/photo-1528825871115-3581a5387919?auto=format&fit=crop&w=720&q=85', tone: 'lavender' }
   ];
   protected readonly allFilteredProducts = computed(() => {
     const term = this.searchTerm().toLowerCase().trim();
@@ -161,3 +173,5 @@ export class App {
     }
   }
 }
+
+
